@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seminar PPG | Yohanes Jelly Sonda</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #0f172a;
+            --accent: #38bdf8;
+            --bg-light: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- LOADER STYLING --- */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: #0f172a;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .parabola-container {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .dish-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            z-index: 2;
+        }
+
+        .signal-wave {
+            position: absolute;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            animation: pulse 1.8s infinite ease-out;
+            opacity: 0;
+        }
+
+        .wave-1 { width: 40px; height: 40px; animation-delay: 0s; }
+        .wave-2 { width: 70px; height: 70px; animation-delay: 0.4s; }
+        .wave-3 { width: 100px; height: 100px; animation-delay: 0.8s; }
+
+        @keyframes pulse {
+            0% { transform: scale(0.5); opacity: 0.8; }
+            100% { transform: scale(1.4); opacity: 0; }
+        }
+
+        .hidden { display: none !important; }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 8%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--secondary);
+            letter-spacing: -0.5px;
+            text-decoration: none;
+        }
+
+        .nav-brand span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary);
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropbtn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .dropbtn i {
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+        }
+
+        .dropdown:hover .dropbtn i {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #ffffff;
+            min-width: 220px;
+            box-shadow: var(--shadow-lg);
+            border-radius: 12px;
+            padding: 0.5rem 0;
+            z-index: 1001;
+            border: 1px solid var(--border-color);
+            animation: fadeIn 0.2s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dropdown-content a {
+            color: var(--text-main);
+            padding: 0.7rem 1.2rem;
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #eff6ff;
+            color: var(--primary);
+            padding-left: 1.5rem;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .nav-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--secondary);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero-section {
+            padding: 4rem 8% 3rem;
+            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #dbeafe;
+            color: var(--primary-dark);
+            padding: 0.5rem 1.25rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .hero-text h1 {
+            font-size: 2.6rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-text p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            max-width: 750px;
+            margin: 0 auto 2rem;
+        }
+
+        .nav-pills {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .pill-btn {
+            padding: 0.6rem 1.25rem;
+            border-radius: 50px;
+            background: white;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pill-btn:hover, .pill-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
+
+        /* --- MAIN CONTENT SECTIONS --- */
+        .main-section {
+            padding: 4rem 8%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            margin-bottom: 2.5rem;
+            text-align: left;
+            border-left: 5px solid var(--primary);
+            padding-left: 1.2rem;
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            color: var(--secondary);
+            font-weight: 800;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-top: 0.25rem;
+        }
+
+        /* --- IDENTIFIKASI DIRI FEATURED CARD --- */
+        .id-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            margin-bottom: 4rem;
+        }
+
+        .id-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .id-card-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .id-card-title i {
+            font-size: 1.8rem;
+            color: var(--primary);
+            background: #eff6ff;
+            padding: 12px;
+            border-radius: 12px;
+        }
+
+        .id-card-title h3 {
+            font-size: 1.4rem;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        .doc-preview-box {
+            position: relative;
+            width: 100%;
+            height: 520px;
+            background: #f1f5f9;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .doc-preview-box iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .doc-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn-action {
+            padding: 0.55rem 1.1rem;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            background: white;
+            color: var(--text-main);
+            transition: all 0.2s ease;
+        }
+
+        .btn-action:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* --- GRID CARDS FOR REFLEKSI MATA KULIAH --- */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .subject-card {
+            background: white;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: #cbd5e1;
+        }
+
+        .subject-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 100%);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .subject-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: white;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            flex-shrink: 0;
+        }
+
+        .subject-title-area h4 {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .subject-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .subject-badge.smt2 {
+            color: #d97706;
+        }
+
+        .subject-body {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .subject-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.25rem;
+            line-height: 1.5;
+        }
+
+        .mini-embed-container {
+            width: 100%;
+            height: 220px;
+            background: #f8fafc;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1.25rem;
+            position: relative;
+        }
+
+        .mini-embed-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .card-footer-btns {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: space-between;
+        }
+
+        /* --- MODAL OVERLAY FOR DRIVE VIEW --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(5px);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-container {
+            background: white;
+            width: 100%;
+            max-width: 1000px;
+            height: 85vh;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-header {
+            padding: 1rem 1.5rem;
+            background: var(--secondary);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .close-modal {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease;
+        }
+
+        .close-modal:hover {
+            background: rgba(255,255,255,0.25);
+        }
+
+        .modal-body {
+            flex-grow: 1;
+            background: #f1f5f9;
+        }
+
+        .modal-body iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* --- FOOTER --- */
+        .footer {
+            background: var(--secondary);
+            color: white;
+            padding: 3rem 8% 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 1.2rem;
+        }
+
+        .footer-socials a {
+            color: #94a3b8;
+            font-size: 1.3rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-socials a:hover {
+            color: var(--accent);
+        }
+
+        /* Responsive Layout Adjustments */
+        @media (max-width: 768px) {
+            .navbar { padding: 1rem 5%; }
+            .nav-toggle { display: block; }
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background: white;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 2rem 5%;
+                gap: 1.5rem;
+                transition: left 0.3s ease;
+                box-shadow: var(--shadow-lg);
+            }
+            .nav-links.nav-active { left: 0; }
+            .dropdown-content {
+                position: static;
+                box-shadow: none;
+                border: none;
+                padding-left: 1rem;
+                width: 100%;
+            }
+            .dropdown:hover .dropdown-content { display: none; }
+            .dropdown.active .dropdown-content { display: block; }
+            .hero-text h1 { font-size: 1.8rem; }
+            .doc-preview-box { height: 360px; }
+            .grid-cards { grid-template-columns: 1fr; }
+            .footer-content { flex-direction: column; gap: 1.5rem; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loader">
+        <div class="parabola-container">
+            <div class="signal-wave wave-3"></div>
+            <div class="signal-wave wave-2"></div>
+            <div class="signal-wave wave-1"></div>
+            <i class="fa-solid fa-satellite-dish dish-icon"></i>
+        </div>
+        <p>Mencari Signal...</p>
+    </div>
+
+    <div id="main-content" class="hidden">
+
+        <nav class="navbar">
+            <a href="https://yohanesjelly2025.github.io/ePorto" class="nav-brand">E-Portofolio<span>.Yohanes Jelly Sonda</span></a>
+            <ul class="nav-links">
+                <li><a href="https://yohanesjelly2025.github.io/ePorto/">Home</a></li>
+                <li class="dropdown">
+                    <a href="https://yohanesjelly2025.github.io/ePorto/#artefak" class="dropbtn">Artefak <i class="fa-solid fa-caret-down"></i></a>
+                    <div class="dropdown-content">
+                        <a href="https://yohanesjelly2025.github.io/ePorto/#artefak">RPP</a>
+                        <a href="https://yohanesjelly2025.github.io/ePorto/#artefak">Media Pembelajaran</a>
+                        <a href="https://yohanesjelly2025.github.io/ePorto/#artefak">Hasil Kerja Siswa</a>
+                        <a href="https://yohanesjelly2025.github.io/ePorto/#artefak">Penilaian GP & DPL</a>
+                        <a href="https://yohanesjelly2025.github.io/ePorto/#artefak">Video Pembelajaran</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="https://yohanesjelly2025.github.io/ePorto#portofolio1" class="dropbtn">Portofolio 1 <i class="fa-solid fa-caret-down"></i></a>
+                    <div class="dropdown-content">
+                        <a href="https://yohanesjelly2025.github.io/ePorto#portofolio1">Profil Mahasiswa</a>
+                        <a href="https://yohanesjelly2025.github.io/ePorto#portofolio1">Analisis Artefak</a>
+                        <a href="https://yohanesjelly2025.github.io/ePorto#portofolio1">Lampiran Penilaian</a>
+                        <a href="https://yohanesjelly2025.github.io/ePorto#portofolio1">Model Guru</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="https://yohanesjelly2025.github.io/ePorto/#portofolio2" class="dropbtn">Portofolio 2 <i class="fa-solid fa-caret-down"></i></a>
+                    <div class="dropdown-content">
+                        <a href="https://yohanesjelly2025.github.io/ePorto/#portofolio2">Refleksi Akhir PPL</a>
+                        <a href="https://yohanesjelly2025.github.io/ePorto/#portofolio2">Filosofi Mengajar</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#seminar" class="dropbtn active">Seminar PPG <i class="fa-solid fa-caret-down"></i></a>
+                    <div class="dropdown-content">
+                        <a href="#identifikasi-diri">Identifikasi Diri</a>
+                        <a href="#smt1">Refleksi SMT 1</a>
+                        <a href="#smt2">Refleksi SMT 2</a>
+                    </div>
+                </li>
+                <li><a href="index.html#about">About</a></li>
+            </ul>
+            <div class="nav-toggle" id="navToggle">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </nav>
+
+        <header id="seminar" class="hero-section">
+            <div class="hero-container">
+                <span class="badge"><i class="fa-solid fa-graduation-cap"></i> Jurnal & Portofolio Seminar</span>
+                <div class="hero-text">
+                    <h1>Seminar Pendidikan Profesi Guru</h1>
+                    <p>Dokumentasi refleksi kritis, petinjau dokumen Google Drive, dan analisis karya artefak pembelajaran selama mengikuti Program Pendidikan Profesi Guru (PPG) Informatika.</p>
+                </div>
+                <div class="nav-pills">
+                    <a href="#identifikasi-diri" class="pill-btn active"><i class="fa-solid fa-user-check"></i> Identifikasi Diri</a>
+                    <a href="#smt1" class="pill-btn"><i class="fa-solid fa-book-open"></i> Refleksi SMT 1</a>
+                    <a href="#smt2" class="pill-btn"><i class="fa-solid fa-award"></i> Refleksi SMT 2</a>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-section">
+
+            <section id="identifikasi-diri">
+                <div class="section-header">
+                    <h2>Identifikasi Diri</h2>
+                    <p>Profil profesional, latar belakang, dan dokumen identifikasi awal calon guru Informatika</p>
+                </div>
+
+                <div class="id-card">
+                    <div class="id-card-header">
+                        <div class="id-card-title">
+                            <i class="fa-solid fa-id-card"></i>
+                            <div>
+                                <h3>Dokumen Identifikasi Diri</h3>
+                                <p style="color: var(--text-muted); font-size: 0.88rem;">Yohanes Jelly Sonda | Mahasiswa PPG Informatika</p>
+                            </div>
+                        </div>
+                        <div class="doc-actions">
+                            <button class="btn-action" onclick="openModal('Identifikasi Diri', 'https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview')">
+                                <i class="fa-solid fa-expand"></i> Layar Penuh
+                            </button>
+                            <a href="https://drive.google.com" target="_blank" class="btn-action">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i> Google Drive
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="doc-preview-box">
+                        <iframe id="iframe-id-diri" src="https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview" title="Identifikasi Diri Document Preview" allow="autoplay"></iframe>
+                    </div>
+                </div>
+            </section>
+
+            <section id="smt1">
+                <div class="section-header">
+                    <h2>Refleksi Mata Kuliah SMT 1</h2>
+                    <p>Kumpulan jurnal refleksi dan petinjau dokumen Google Drive mata kuliah Semester 1</p>
+                </div>
+
+                <div class="grid-cards">
+
+                    <!-- 1. Filosofi Pendidikan dan Pendidikan Nilai -->
+                    <div class="subject-card">
+                        <div class="subject-header">
+                            <div class="subject-icon"><i class="fa-solid fa-scroll"></i></div>
+                            <div class="subject-title-area">
+                                <span class="subject-badge">Semester 1</span>
+                                <h4>Filosofi Pendidikan dan Pendidikan Nilai</h4>
+                            </div>
+                        </div>
+                        <div class="subject-body">
+                            <p class="subject-desc">Refleksi pemikiran Ki Hajar Dewantara mengenai sistem among, pemikiran kearifan lokal, serta internalisasi nilai-nilai Pancasila.</p>
+                            
+                            <div class="mini-embed-container">
+                                <iframe src="https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview" title="Filosofi Pendidikan Preview"></iframe>
+                            </div>
+
+                            <div class="card-footer-btns">
+                                <button class="btn-action" style="width: 100%; justify-content: center;" onclick="openModal('Filosofi Pendidikan dan Pendidikan Nilai', 'https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview')">
+                                    <i class="fa-solid fa-eye"></i> Petinjau Dokumen
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Peserta Didik dan Pemahamannya -->
+                    <div class="subject-card">
+                        <div class="subject-header">
+                            <div class="subject-icon"><i class="fa-solid fa-users"></i></div>
+                            <div class="subject-title-area">
+                                <span class="subject-badge">Semester 1</span>
+                                <h4>Peserta Didik dan Pemahamannya</h4>
+                            </div>
+                        </div>
+                        <div class="subject-body">
+                            <p class="subject-desc">Pemahaman mendalam tentang teori perkembangan anak, karakteristik profil belajar siswa, dan perancangan asesmen awal.</p>
+                            
+                            <div class="mini-embed-container">
+                                <iframe src="https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview" title="Peserta Didik dan Pemahamannya Preview"></iframe>
+                            </div>
+
+                            <div class="card-footer-btns">
+                                <button class="btn-action" style="width: 100%; justify-content: center;" onclick="openModal('Peserta Didik dan Pemahamannya', 'https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview')">
+                                    <i class="fa-solid fa-eye"></i> Petinjau Dokumen
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Pola Pikir Bertumbuh "Growth Mindset" -->
+                    <div class="subject-card">
+                        <div class="subject-header">
+                            <div class="subject-icon"><i class="fa-solid fa-brain"></i></div>
+                            <div class="subject-title-area">
+                                <span class="subject-badge">Semester 1</span>
+                                <h4>Pola Pikir Bertumbuh "Growth Mindset"</h4>
+                            </div>
+                        </div>
+                        <div class="subject-body">
+                            <p class="subject-desc">Implementasi orientasi berkembang, penguatan daya tahan mental, ketangguhan belajar, dan pola pikir positif pada siswa.</p>
+                            
+                            <div class="mini-embed-container">
+                                <iframe src="https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview" title="Growth Mindset Preview"></iframe>
+                            </div>
+
+                            <div class="card-footer-btns">
+                                <button class="btn-action" style="width: 100%; justify-content: center;" onclick="openModal('Pola Pikir Bertumbuh Growth Mindset', 'https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview')">
+                                    <i class="fa-solid fa-eye"></i> Petinjau Dokumen
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Pembelajaran Kreatif dan Inovatif -->
+                    <div class="subject-card">
+                        <div class="subject-header">
+                            <div class="subject-icon"><i class="fa-solid fa-lightbulb"></i></div>
+                            <div class="subject-title-area">
+                                <span class="subject-badge">Semester 1</span>
+                                <h4>Pembelajaran Kreatif dan Inovatif</h4>
+                            </div>
+                        </div>
+                        <div class="subject-body">
+                            <p class="subject-desc">Eksplorasi model pembelajaran interaktif, integrasi multimedia Informatika, dan inovasi pedagogi berbasis proyek teknologi.</p>
+                            
+                            <div class="mini-embed-container">
+                                <iframe src="https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview" title="Pembelajaran Kreatif Preview"></iframe>
+                            </div>
+
+                            <div class="card-footer-btns">
+                                <button class="btn-action" style="width: 100%; justify-content: center;" onclick="openModal('Pembelajaran Kreatif dan Inovatif', 'https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview')">
+                                    <i class="fa-solid fa-eye"></i> Petinjau Dokumen
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 5. Pembelajaran Mendalam dan Asesmen Dasar -->
+                    <div class="subject-card">
+                        <div class="subject-header">
+                            <div class="subject-icon"><i class="fa-solid fa-chart-line"></i></div>
+                            <div class="subject-title-area">
+                                <span class="subject-badge">Semester 1</span>
+                                <h4>Pembelajaran Mendalam dan Asesmen Dasar</h4>
+                            </div>
+                        </div>
+                        <div class="subject-body">
+                            <p class="subject-desc">Prinsip asesmen formatif, sumatif, konstruksi rubrik penilaian objektif, serta strategi pengajaran Deep Learning dasar.</p>
+                            
+                            <div class="mini-embed-container">
+                                <iframe src="https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview" title="Asesmen Dasar Preview"></iframe>
+                            </div>
+
+                            <div class="card-footer-btns">
+                                <button class="btn-action" style="width: 100%; justify-content: center;" onclick="openModal('Pembelajaran Mendalam dan Asesmen Dasar', 'https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview')">
+                                    <i class="fa-solid fa-eye"></i> Petinjau Dokumen
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 6. PPL Terbimbing -->
+                    <div class="subject-card">
+                        <div class="subject-header">
+                            <div class="subject-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+                            <div class="subject-title-area">
+                                <span class="subject-badge">Semester 1</span>
+                                <h4>PPL Terbimbing</h4>
+                            </div>
+                        </div>
+                        <div class="subject-body">
+                            <p class="subject-desc">Pengalaman nyata praktik mengajar terbimbing di sekolah mitra, observasi dinamika kelas, dan bimbingan bersama DPL & Guru Pamong.</p>
+                            
+                            <div class="mini-embed-container">
+                                <iframe src="https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview" title="PPL Terbimbing Preview"></iframe>
+                            </div>
+
+                            <div class="card-footer-btns">
+                                <button class="btn-action" style="width: 100%; justify-content: center;" onclick="openModal('PPL Terbimbing', 'https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview')">
+                                    <i class="fa-solid fa-eye"></i> Petinjau Dokumen
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section id="smt2">
+                <div class="section-header">
+                    <h2>Refleksi Mata Kuliah SMT 2</h2>
+                    <p>Kumpulan jurnal refleksi dan petinjau dokumen Google Drive mata kuliah Semester 2</p>
+                </div>
+
+                <div class="grid-cards">
+
+                    <!-- 1. Pembelajaran Sosial Emosional "PSE" -->
+                    <div class="subject-card">
+                        <div class="subject-header">
+                            <div class="subject-icon" style="color: #d97706;"><i class="fa-solid fa-heart-pulse"></i></div>
+                            <div class="subject-title-area">
+                                <span class="subject-badge smt2">Semester 2</span>
+                                <h4>Pembelajaran Sosial Emosional "PSE"</h4>
+                            </div>
+                        </div>
+                        <div class="subject-body">
+                            <p class="subject-desc">Penerapan kesadaran diri, pengelolaan emosi, empati, dan keterampilan berelasi untuk membangun iklim kelas yang positif.</p>
+                            
+                            <div class="mini-embed-container">
+                                <iframe src="https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview" title="Pembelajaran Sosial Emosional Preview"></iframe>
+                            </div>
+
+                            <div class="card-footer-btns">
+                                <button class="btn-action" style="width: 100%; justify-content: center;" onclick="openModal('Pembelajaran Sosial Emosional PSE', 'https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview')">
+                                    <i class="fa-solid fa-eye"></i> Petinjau Dokumen
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Projek Kepemimpinan -->
+                    <div class="subject-card">
+                        <div class="subject-header">
+                            <div class="subject-icon" style="color: #d97706;"><i class="fa-solid fa-people-roof"></i></div>
+                            <div class="subject-title-area">
+                                <span class="subject-badge smt2">Semester 2</span>
+                                <h4>Projek Kepemimpinan</h4>
+                            </div>
+                        </div>
+                        <div class="subject-body">
+                            <p class="subject-desc">Perancangan dan eksekusi proyek kontribusi sosial-kemasyarakatan berbasis layanan edukasi digital dan pemberdayaan komunitas.</p>
+                            
+                            <div class="mini-embed-container">
+                                <iframe src="https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview" title="Projek Kepemimpinan Preview"></iframe>
+                            </div>
+
+                            <div class="card-footer-btns">
+                                <button class="btn-action" style="width: 100%; justify-content: center;" onclick="openModal('Projek Kepemimpinan', 'https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview')">
+                                    <i class="fa-solid fa-eye"></i> Petinjau Dokumen
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Pembelajaran Mendalam dan Asesmen Lanjut -->
+                    <div class="subject-card">
+                        <div class="subject-header">
+                            <div class="subject-icon" style="color: #d97706;"><i class="fa-solid fa-sliders"></i></div>
+                            <div class="subject-title-area">
+                                <span class="subject-badge smt2">Semester 2</span>
+                                <h4>Pembelajaran Mendalam & Asesmen Lanjut</h4>
+                            </div>
+                        </div>
+                        <div class="subject-body">
+                            <p class="subject-desc">Pengembangan teknik evaluasi komprehensif, penyusunan rubrik HOTS, serta rancangan pengajaran mendalam yang adaptif.</p>
+                            
+                            <div class="mini-embed-container">
+                                <iframe src="https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview" title="Pembelajaran Mendalam dan Asesmen Lanjut Preview"></iframe>
+                            </div>
+
+                            <div class="card-footer-btns">
+                                <button class="btn-action" style="width: 100%; justify-content: center;" onclick="openModal('Pembelajaran Mendalam dan Asesmen Lanjut', 'https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview')">
+                                    <i class="fa-solid fa-eye"></i> Petinjau Dokumen
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. PPL Mandiri -->
+                    <div class="subject-card">
+                        <div class="subject-header">
+                            <div class="subject-icon" style="color: #d97706;"><i class="fa-solid fa-user-gear"></i></div>
+                            <div class="subject-title-area">
+                                <span class="subject-badge smt2">Semester 2</span>
+                                <h4>PPL Mandiri</h4>
+                            </div>
+                        </div>
+                        <div class="subject-body">
+                            <p class="subject-desc">Pelaksanaan praktik pembelajaran mandiri secara utuh di sekolah mitra, pengelolaan dinamika kelas, dan evaluasi hasil belajar mandiri.</p>
+                            
+                            <div class="mini-embed-container">
+                                <iframe src="https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview" title="PPL Mandiri Preview"></iframe>
+                            </div>
+
+                            <div class="card-footer-btns">
+                                <button class="btn-action" style="width: 100%; justify-content: center;" onclick="openModal('PPL Mandiri', 'https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview')">
+                                    <i class="fa-solid fa-eye"></i> Petinjau Dokumen
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 5. Pilihan Selektif/Elektif -->
+                    <div class="subject-card">
+                        <div class="subject-header">
+                            <div class="subject-icon" style="color: #d97706;"><i class="fa-solid fa-layer-group"></i></div>
+                            <div class="subject-title-area">
+                                <span class="subject-badge smt2">Semester 2</span>
+                                <h4>Pilihan Selektif / Elektif</h4>
+                            </div>
+                        </div>
+                        <div class="subject-body">
+                            <p class="subject-desc">Dokumentasi mata kuliah pilihan keahlian khusus untuk memperdalam komptensi pedagogik dan vokasional Informatika.</p>
+                            
+                            <div class="mini-embed-container">
+                                <iframe src="https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview" title="Pilihan Selektif / Elektif Preview"></iframe>
+                            </div>
+
+                            <div class="card-footer-btns">
+                                <button class="btn-action" style="width: 100%; justify-content: center;" onclick="openModal('Pilihan Selektif / Elektif', 'https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview')">
+                                    <i class="fa-solid fa-eye"></i> Petinjau Dokumen
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+        </main>
+
+        <div class="modal-overlay" id="modalOverlay">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <div class="modal-title">
+                        <i class="fa-solid fa-file-pdf"></i>
+                        <span id="modalTitle">Petinjau Dokumen</span>
+                    </div>
+                    <button class="close-modal" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="modal-body">
+                    <iframe id="modalIframe" src="" title="Full Document Preview"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <p>&copy; 2026 <strong>Yohanes Jelly Sonda</strong>. PPG Informatika.</p>
+                <div class="footer-socials">
+                    <a href="#"><i class="fa-brands fa-github"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        // Loading Screen Animation
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                const mainContent = document.getElementById('main-content');
+                
+                loader.style.opacity = '0';
+                loader.style.transition = '0.5s ease';
+                
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    mainContent.classList.remove('hidden');
+                }, 500);
+            }, 2000); 
+        });
+
+        // Mobile Menu Nav Toggle
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.querySelector('.nav-links');
+        if (navToggle) {
+            navToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('nav-active');
+            });
+        }
+
+        // Modal Control Functions for Full View Document Embeds
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalIframe = document.getElementById('modalIframe');
+
+        function openModal(title, url) {
+            modalTitle.innerText = title;
+            modalIframe.src = url;
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+            modalIframe.src = '';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking on overlay background
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
