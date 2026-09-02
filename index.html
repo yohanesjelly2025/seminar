@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Seminar PPG | Yohanes Jelly Sonda</title>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -15,6 +15,7 @@
         :root {
             --primary: #2563eb;
             --primary-dark: #1d4ed8;
+            --primary-light: #eff6ff;
             --secondary: #0f172a;
             --accent: #38bdf8;
             --bg-light: #f8fafc;
@@ -25,17 +26,20 @@
             --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
             --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
             --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --transition-speed: 0.3s;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         html {
             scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
         }
 
         body {
@@ -43,9 +47,12 @@
             color: var(--text-main);
             line-height: 1.6;
             overflow-x: hidden;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* --- LOADER STYLING --- */
         #loader {
             position: fixed;
             top: 0;
@@ -96,26 +103,33 @@
 
         .hidden { display: none !important; }
 
-        /* --- NAVBAR --- */
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.2rem 8%;
+            padding: 1.1rem 8%;
+            padding-top: max(1.1rem, env(safe-area-inset-top));
+            padding-left: max(8%, env(safe-area-inset-left));
+            padding-right: max(8%, env(safe-area-inset-right));
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.08);
         }
 
         .nav-brand {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 800;
             color: var(--secondary);
             letter-spacing: -0.5px;
             text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
         }
 
         .nav-brand span {
@@ -125,20 +139,27 @@
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 2rem;
+            gap: 1.8rem;
             align-items: center;
         }
 
-        .nav-links a {
+        .nav-link {
             text-decoration: none;
             color: var(--text-main);
             font-weight: 600;
             font-size: 0.95rem;
-            transition: color 0.3s ease;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .nav-links a:hover, .nav-links a.active {
+        .nav-link:hover, .nav-link.active {
             color: var(--primary);
+            background-color: var(--primary-light);
         }
 
         .dropdown {
@@ -152,12 +173,13 @@
             cursor: pointer;
         }
 
-        .dropbtn i {
+        .dropbtn i.fa-caret-down {
             font-size: 0.8rem;
             transition: transform 0.3s ease;
         }
 
-        .dropdown:hover .dropbtn i {
+        .dropdown:hover .dropbtn i.fa-caret-down, 
+        .dropdown.active .dropbtn i.fa-caret-down {
             transform: rotate(180deg);
         }
 
@@ -167,7 +189,7 @@
             top: 100%;
             left: 0;
             background-color: #ffffff;
-            min-width: 220px;
+            min-width: 230px;
             box-shadow: var(--shadow-lg);
             border-radius: 12px;
             padding: 0.5rem 0;
@@ -177,21 +199,25 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .dropdown-content a {
             color: var(--text-main);
-            padding: 0.7rem 1.2rem;
-            display: block;
+            padding: 0.75rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             font-size: 0.9rem;
             font-weight: 500;
+            text-decoration: none;
             transition: all 0.2s ease;
+            cursor: pointer;
         }
 
-        .dropdown-content a:hover {
-            background-color: #eff6ff;
+        .dropdown-content a:hover, .dropdown-content a.active {
+            background-color: var(--primary-light);
             color: var(--primary);
             padding-left: 1.5rem;
         }
@@ -205,11 +231,13 @@
             font-size: 1.5rem;
             cursor: pointer;
             color: var(--secondary);
+            padding: 6px;
         }
 
-        /* --- HERO SECTION --- */
         .hero-section {
-            padding: 4rem 8% 3rem;
+            padding: 3.5rem 8% 2.5rem;
+            padding-left: max(8%, env(safe-area-inset-left));
+            padding-right: max(8%, env(safe-area-inset-right));
             background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
             border-bottom: 1px solid var(--border-color);
         }
@@ -229,14 +257,13 @@
             gap: 8px;
             background: #dbeafe;
             color: var(--primary-dark);
-            padding: 0.5rem 1.25rem;
+            padding: 0.45rem 1.2rem;
             border-radius: 50px;
             font-weight: 700;
             font-size: 0.85rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.25rem;
         }
 
-        /* Container baru untuk menyejajarkan foto dan judul */
         .hero-title-wrapper {
             display: flex;
             align-items: center;
@@ -245,32 +272,32 @@
             margin-bottom: 1rem;
         }
 
-        /* Styling Foto Profil (Avatar) */
         .profile-avatar {
-            width: 85px;
-            height: 85px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             object-fit: cover;
             border: 4px solid white;
             box-shadow: 0 8px 16px -4px rgba(37, 99, 235, 0.25);
             background-color: var(--primary); 
+            flex-shrink: 0;
         }
 
         .hero-text h1 {
-            font-size: 2.6rem;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
             color: var(--secondary);
-            margin-bottom: 0; /* Margin dipindah ke wrapper */
+            margin-bottom: 0;
             line-height: 1.2;
             font-weight: 800;
             letter-spacing: -0.5px;
-            text-align: left; /* Teks rata kiri relatif terhadap foto */
+            text-align: left;
         }
 
         .hero-text p {
             color: var(--text-muted);
-            font-size: 1.05rem;
+            font-size: clamp(0.95rem, 2vw, 1.05rem);
             max-width: 750px;
-            margin: 0 auto 2rem;
+            margin: 0.5rem auto 1.8rem;
             text-align: center;
         }
 
@@ -282,7 +309,7 @@
         }
 
         .pill-btn {
-            padding: 0.6rem 1.25rem;
+            padding: 0.65rem 1.3rem;
             border-radius: 50px;
             background: white;
             border: 1px solid var(--border-color);
@@ -295,6 +322,8 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            cursor: pointer;
+            min-height: 44px;
         }
 
         .pill-btn:hover, .pill-btn.active {
@@ -304,40 +333,142 @@
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
         }
 
-        /* --- MAIN CONTENT SECTIONS --- */
-        .main-section {
-            padding: 4rem 8%;
+        .main-wrapper {
+            flex-grow: 1;
+            padding: 3rem 8%;
+            padding-left: max(8%, env(safe-area-inset-left));
+            padding-right: max(8%, env(safe-area-inset-right));
             max-width: 1200px;
             margin: 0 auto;
+            width: 100%;
+        }
+
+        .page-view {
+            display: none;
+            animation: slideUp 0.35s ease-out forwards;
+        }
+
+        .page-view.active-page {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .section-header {
-            margin-bottom: 2.5rem;
+            margin-bottom: 2.2rem;
             text-align: left;
             border-left: 5px solid var(--primary);
             padding-left: 1.2rem;
         }
 
         .section-header h2 {
-            font-size: 2rem;
+            font-size: clamp(1.5rem, 3.5vw, 2rem);
             color: var(--secondary);
             font-weight: 800;
         }
 
         .section-header p {
             color: var(--text-muted);
-            font-size: 1rem;
+            font-size: 0.98rem;
             margin-top: 0.25rem;
         }
 
-        /* --- IDENTIFIKASI DIRI FEATURED CARD --- */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .overview-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .overview-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: var(--primary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .overview-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: #cbd5e1;
+        }
+
+        .overview-card:hover::before {
+            opacity: 1;
+        }
+
+        .overview-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            background: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .overview-card h3 {
+            font-size: 1.25rem;
+            color: var(--secondary);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .overview-card p {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .overview-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
         .id-card {
             background: white;
             border-radius: 20px;
             padding: 2rem;
             box-shadow: var(--shadow-md);
             border: 1px solid var(--border-color);
-            margin-bottom: 4rem;
+            margin-bottom: 2rem;
         }
 
         .id-card-header {
@@ -358,13 +489,13 @@
         .id-card-title i {
             font-size: 1.8rem;
             color: var(--primary);
-            background: #eff6ff;
+            background: var(--primary-light);
             padding: 12px;
             border-radius: 12px;
         }
 
         .id-card-title h3 {
-            font-size: 1.4rem;
+            font-size: 1.35rem;
             color: var(--secondary);
             font-weight: 700;
         }
@@ -372,7 +503,7 @@
         .doc-preview-box {
             position: relative;
             width: 100%;
-            height: 520px;
+            height: 540px;
             background: #f1f5f9;
             border-radius: 14px;
             overflow: hidden;
@@ -388,10 +519,11 @@
         .doc-actions {
             display: flex;
             gap: 0.75rem;
+            flex-wrap: wrap;
         }
 
         .btn-action {
-            padding: 0.55rem 1.1rem;
+            padding: 0.6rem 1.1rem;
             border-radius: 8px;
             font-size: 0.88rem;
             font-weight: 600;
@@ -404,6 +536,7 @@
             background: white;
             color: var(--text-main);
             transition: all 0.2s ease;
+            min-height: 42px;
         }
 
         .btn-action:hover {
@@ -412,12 +545,11 @@
             border-color: var(--primary);
         }
 
-        /* --- GRID CARDS FOR REFLEKSI MATA KULIAH --- */
         .grid-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2rem;
-            margin-bottom: 4rem;
+            margin-bottom: 2rem;
         }
 
         .subject-card {
@@ -461,10 +593,10 @@
         }
 
         .subject-title-area h4 {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             color: var(--secondary);
             font-weight: 700;
-            line-height: 1.3;
+            line-height: 1.35;
         }
 
         .subject-badge {
@@ -519,7 +651,6 @@
             justify-content: space-between;
         }
 
-        /* --- MODAL OVERLAY FOR DRIVE VIEW --- */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -527,12 +658,12 @@
             width: 100%;
             height: 100vh;
             background: rgba(15, 23, 42, 0.75);
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(6px);
             z-index: 99999;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 2rem;
+            padding: 1.5rem;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.3s ease;
@@ -566,18 +697,22 @@
 
         .modal-title {
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             display: flex;
             align-items: center;
             gap: 10px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: 85%;
         }
 
         .close-modal {
             background: rgba(255,255,255,0.1);
             border: none;
             color: white;
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             cursor: pointer;
             font-size: 1.1rem;
@@ -585,6 +720,7 @@
             align-items: center;
             justify-content: center;
             transition: background 0.2s ease;
+            flex-shrink: 0;
         }
 
         .close-modal:hover {
@@ -602,12 +738,14 @@
             border: none;
         }
 
-        /* --- FOOTER --- */
         .footer {
             background: var(--secondary);
             color: white;
-            padding: 3rem 8% 2rem;
-            margin-top: 4rem;
+            padding: 2.5rem 8% 2rem;
+            padding-left: max(8%, env(safe-area-inset-left));
+            padding-right: max(8%, env(safe-area-inset-right));
+            padding-bottom: max(2rem, env(safe-area-inset-bottom));
+            margin-top: auto;
         }
 
         .footer-content {
@@ -627,58 +765,84 @@
             color: #94a3b8;
             font-size: 1.3rem;
             transition: color 0.3s ease;
+            padding: 5px;
         }
 
         .footer-socials a:hover {
             color: var(--accent);
         }
 
-        /* Responsive Layout Adjustments */
+        @media (min-width: 1200px) {
+            .grid-cards {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 1199px) and (min-width: 769px) {
+            .grid-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         @media (max-width: 768px) {
             .navbar { padding: 1rem 5%; }
             .nav-toggle { display: block; }
             .nav-links {
                 position: fixed;
-                top: 70px;
+                top: 65px;
                 left: -100%;
                 width: 100%;
-                height: calc(100vh - 70px);
+                height: calc(100vh - 65px);
                 background: white;
                 flex-direction: column;
                 align-items: flex-start;
-                padding: 2rem 5%;
-                gap: 1.5rem;
-                transition: left 0.3s ease;
+                padding: 2rem 8%;
+                gap: 1rem;
+                transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 box-shadow: var(--shadow-lg);
+                overflow-y: auto;
             }
             .nav-links.nav-active { left: 0; }
+            .nav-link { width: 100%; padding: 0.75rem 1rem; }
+            .dropdown { width: 100%; }
             .dropdown-content {
                 position: static;
                 box-shadow: none;
                 border: none;
                 padding-left: 1rem;
                 width: 100%;
+                display: none;
             }
             .dropdown:hover .dropdown-content { display: none; }
             .dropdown.active .dropdown-content { display: block; }
             
-            /* Penyesuaian Foto Profil di Mobile */
+            .hero-section { padding: 2.5rem 5% 2rem; }
             .hero-title-wrapper { 
-                flex-direction: column; /* Ubah ke susunan vertikal */
-                gap: 1rem;
+                flex-direction: column;
+                gap: 0.8rem;
             }
             .profile-avatar {
                 width: 75px;
                 height: 75px;
             }
             .hero-text h1 { 
-                font-size: 1.8rem; 
-                text-align: center; /* Judul rata tengah di mobile */
+                text-align: center;
             }
 
-            .doc-preview-box { height: 360px; }
-            .grid-cards { grid-template-columns: 1fr; }
+            .main-wrapper { padding: 2rem 5%; }
+            .id-card { padding: 1.25rem; }
+            .doc-preview-box { height: 380px; }
+            .grid-cards { grid-template-columns: 1fr; gap: 1.5rem; }
             .footer-content { flex-direction: column; gap: 1.5rem; text-align: center; }
+        }
+
+        @media (max-width: 480px) {
+            .doc-preview-box { height: 320px; }
+            .id-card-header { flex-direction: column; align-items: flex-start; }
+            .doc-actions { width: 100%; }
+            .btn-action { flex: 1; justify-content: center; }
+            .modal-overlay { padding: 0.75rem; }
+            .modal-container { height: 92vh; border-radius: 12px; }
         }
     </style>
 </head>
@@ -696,77 +860,123 @@
 
     <div id="main-content" class="hidden">
 
+        <!-- NAVBAR -->
         <nav class="navbar">
-            <a href="https://yohanesjelly2025.github.io/ePorto" class="nav-brand">E-Portofolio<span>|Yohanes Jelly Sonda</span></a>
+            <a href="https://yohanesjelly2025.github.io/ePorto/" target="_blank" rel="noopener" class="nav-brand" title="Buka E-Portofolio">
+                E-Portofolio<span>|Yohanes Jelly Sonda</span>
+            </a>
             <ul class="nav-links">
-                <li><a href="https://yohanesjelly2025.github.io/ePorto/">Home</a></li>
-                <li class="dropdown">
-                    <a href="https://yohanesjelly2025.github.io/ePorto/#artefak" class="dropbtn">Artefak <i class="fa-solid fa-caret-down"></i></a>
+                <li>
+                    <a href="#home" class="nav-link active" data-page="home" onclick="switchPage('home')">
+                        <i class="fa-solid fa-house"></i> Home
+                    </a>
+                </li>
+                <li class="dropdown" id="seminarDropdown">
+                    <a class="nav-link dropbtn" id="seminarDropBtn">
+                        <i class="fa-solid fa-graduation-cap"></i> Seminar PPG <i class="fa-solid fa-caret-down"></i>
+                    </a>
                     <div class="dropdown-content">
-                        <a href="https://yohanesjelly2025.github.io/ePorto/#artefak">RPP</a>
-                        <a href="https://yohanesjelly2025.github.io/ePorto/#artefak">Media Pembelajaran</a>
-                        <a href="https://yohanesjelly2025.github.io/ePorto/#artefak">Hasil Kerja Siswa</a>
-                        <a href="https://yohanesjelly2025.github.io/ePorto/#artefak">Penilaian GP & DPL</a>
-                        <a href="https://yohanesjelly2025.github.io/ePorto/#artefak">Video Pembelajaran</a>
+                        <a href="#identifikasi-diri" data-page="identifikasi-diri" onclick="switchPage('identifikasi-diri')">
+                            <i class="fa-solid fa-id-card"></i> Identifikasi Diri
+                        </a>
+                        <a href="#smt1" data-page="smt1" onclick="switchPage('smt1')">
+                            <i class="fa-solid fa-book-open"></i> Refleksi SMT 1
+                        </a>
+                        <a href="#smt2" data-page="smt2" onclick="switchPage('smt2')">
+                            <i class="fa-solid fa-award"></i> Refleksi SMT 2
+                        </a>
                     </div>
                 </li>
-                <li class="dropdown">
-                    <a href="https://yohanesjelly2025.github.io/ePorto#portofolio1" class="dropbtn">Portofolio <i class="fa-solid fa-caret-down"></i></a>
-                    <div class="dropdown-content">
-                        <a href="https://yohanesjelly2025.github.io/ePorto#portofolio1">Profil Mahasiswa</a>
-                        <a href="https://yohanesjelly2025.github.io/ePorto#portofolio1">Analisis Artefak</a>
-                        <a href="https://yohanesjelly2025.github.io/ePorto#portofolio1">Lampiran Penilaian</a>
-                        <a href="https://yohanesjelly2025.github.io/ePorto#portofolio1">Model Guru</a>
-                    </div>
-                </li>
-                <li class="dropdown">
-                    <a href="#seminar" class="dropbtn active">Seminar PPG <i class="fa-solid fa-caret-down"></i></a>
-                    <div class="dropdown-content">
-                        <a href="#identifikasi-diri">Identifikasi Diri</a>
-                        <a href="#smt1">Refleksi SMT 1</a>
-                        <a href="#smt2">Refleksi SMT 2</a>
-                    </div>
-                </li>
-                <li><a href="index.html#about">About</a></li>
             </ul>
-            <div class="nav-toggle" id="navToggle">
+            <div class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
                 <i class="fa-solid fa-bars"></i>
             </div>
         </nav>
 
-        <header id="seminar" class="hero-section">
+        <header class="hero-section">
             <div class="hero-container">
                 <span class="badge"><i class="fa-solid fa-graduation-cap"></i> Jurnal & Portofolio Seminar</span>
                 
                 <div class="hero-text">
-                    <!-- Wrapper baru untuk Foto Profil & Judul -->
                     <div class="hero-title-wrapper">
-                        <!-- URL Gambar bisa diganti dengan link foto Anda -->
                         <img src="https://yohanesjelly2025.github.io/ePorto/yoejelly.png" alt="Foto Profil Yohanes" class="profile-avatar">
                         <h1>Seminar Pendidikan Profesi Guru</h1>
                     </div>
                     <p>Dokumentasi refleksi kritis, petinjau dokumen Google Drive, dan analisis karya artefak pembelajaran selama mengikuti Program Pendidikan Profesi Guru (PPG) Informatika.</p>
                 </div>
                 
+                <!-- NAVIGATION PILLS -->
                 <div class="nav-pills">
-                    <a href="#identifikasi-diri" class="pill-btn active"><i class="fa-solid fa-user-check"></i> Identifikasi Diri</a>
-                    <a href="#smt1" class="pill-btn"><i class="fa-solid fa-book-open"></i> Refleksi SMT 1</a>
-                    <a href="#smt2" class="pill-btn"><i class="fa-solid fa-award"></i> Refleksi SMT 2</a>
+                    <button class="pill-btn active" data-pill="home" onclick="switchPage('home')">
+                        <i class="fa-solid fa-house"></i> Home
+                    </button>
+                    <button class="pill-btn" data-pill="identifikasi-diri" onclick="switchPage('identifikasi-diri')">
+                        <i class="fa-solid fa-user-check"></i> Identifikasi Diri
+                    </button>
+                    <button class="pill-btn" data-pill="smt1" onclick="switchPage('smt1')">
+                        <i class="fa-solid fa-book-open"></i> Refleksi SMT 1
+                    </button>
+                    <button class="pill-btn" data-pill="smt2" onclick="switchPage('smt2')">
+                        <i class="fa-solid fa-award"></i> Refleksi SMT 2
+                    </button>
                 </div>
             </div>
         </header>
 
-        <main class="main-section">
+        <main class="main-wrapper">
 
-            <section id="identifikasi-diri">
+            <!-- ================= PAGE 1: HOME ================= -->
+            <div id="page-home" class="page-view active-page">
+                <div class="section-header">
+                    <h2>Selamat Datang di Portofolio Seminar PPG</h2>
+                    <p>Pilih navigasi halaman di bawah ini untuk mengakses dokumen Identifikasi Diri dan Refleksi Mata Kuliah SMT 1 & 2.</p>
+                </div>
+
+                <div class="overview-grid">
+                    <!-- Overview Card 1 -->
+                    <div class="overview-card" onclick="switchPage('identifikasi-diri')">
+                        <div>
+                            <div class="overview-icon">
+                                <i class="fa-solid fa-id-card"></i>
+                            </div>
+                            <h3>Identifikasi Diri</h3>
+                            <p>Visi pribadi, filosofi mengajar, serta dokumen profil lengkap Mahasiswa PPG Informatika Yohanes Jelly Sonda.</p>
+                        </div>
+                        <span class="overview-btn">Buka Halaman <i class="fa-solid fa-arrow-right"></i></span>
+                    </div>
+
+                    <!-- Overview Card 2 -->
+                    <div class="overview-card" onclick="switchPage('smt1')">
+                        <div>
+                            <div class="overview-icon">
+                                <i class="fa-solid fa-book-open"></i>
+                            </div>
+                            <h3>Refleksi Semester 1</h3>
+                            <p>Jurnal refleksi & petinjau artefak pembelajaran 6 mata kuliah: Filosofi, PPDP, Growth Mindset, Pembelajaran Kreatif, PMA, dan PPL Terbimbing.</p>
+                        </div>
+                        <span class="overview-btn">Lihat Refleksi SMT 1 <i class="fa-solid fa-arrow-right"></i></span>
+                    </div>
+
+                    <!-- Overview Card 3 -->
+                    <div class="overview-card" onclick="switchPage('smt2')">
+                        <div>
+                            <div class="overview-icon" style="color: #d97706; background: #fef3c7;">
+                                <i class="fa-solid fa-award"></i>
+                            </div>
+                            <h3>Refleksi Semester 2</h3>
+                            <p>Jurnal refleksi & petinjau artefak pembelajaran 5 mata kuliah: PSE, Projek Kepemimpinan, Asesmen Lanjut, PPL Mandiri, dan Selektif.</p>
+                        </div>
+                        <span class="overview-btn" style="color: #d97706;">Lihat Refleksi SMT 2 <i class="fa-solid fa-arrow-right"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= PAGE 2: IDENTIFIKASI DIRI ================= -->
+            <div id="page-identifikasi-diri" class="page-view">
                 <div class="section-header">
                     <h2>Identifikasi Diri</h2>
-                    <p>Visi pribadi saya untuk Pendidikan Indonesia adalah menciptakan ruang belajar inklusif dan
-merata yang memungkinkan setiap anak, terlepas dari latar belakangnya, untuk mencapai
-potensi terbaiknya.</p> 
-                    <p> Sebagai calon guru, saya bervisi menjadi pendidik yang tidak hanya
-mentransfer ilmu tetapi juga membangun karakter, memfasilitasi siswa untuk menjadi
-pembelajar sepanjang hayat yang kreatif, kritis, dan berakhlak mulia. </p>
+                    <p>Visi pribadi saya untuk Pendidikan Indonesia adalah menciptakan ruang belajar inklusif dan merata yang memungkinkan setiap anak, terlepas dari latar belakangnya, untuk mencapai potensi terbaiknya.</p> 
+                    <p style="margin-top: 0.5rem;">Sebagai calon guru, saya bervisi menjadi pendidik yang tidak hanya mentransfer ilmu tetapi juga membangun karakter, memfasilitasi siswa untuk menjadi pembelajar sepanjang hayat yang kreatif, kritis, dan berakhlak mulia.</p>
                 </div>
 
                 <div class="id-card">
@@ -782,7 +992,7 @@ pembelajar sepanjang hayat yang kreatif, kritis, dan berakhlak mulia. </p>
                             <button class="btn-action" onclick="openModal('Identifikasi Diri', 'SPPG1.pdf')">
                                 <i class="fa-solid fa-expand"></i> Layar Penuh
                             </button>
-                            <a href="https://drive.google.com/file/d/1w2LIcybLz835myyaw1Jmu5KXrFJT5vhv/view?usp=sharing" target="_blank" class="btn-action">
+                            <a href="https://drive.google.com/file/d/1w2LIcybLz835myyaw1Jmu5KXrFJT5vhv/view?usp=sharing" target="_blank" rel="noopener" class="btn-action">
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i> Google Drive
                             </a>
                         </div>
@@ -792,16 +1002,17 @@ pembelajar sepanjang hayat yang kreatif, kritis, dan berakhlak mulia. </p>
                         <iframe id="iframe-id-diri" src="SPPG1.pdf" title="Identifikasi Diri Document Preview" allow="autoplay"></iframe>
                     </div>
                 </div>
-            </section>
+            </div>
 
-            <section id="smt1">
+            <!-- ================= PAGE 3: REFLEKSI SMT 1 ================= -->
+            <div id="page-smt1" class="page-view">
                 <div class="section-header">
                     <h2>Refleksi Mata Kuliah SMT 1</h2>
                     <p>Kumpulan jurnal refleksi dan petinjau dokumen Google Drive mata kuliah Semester 1</p>
                 </div>
 
                 <div class="grid-cards">
-                    <!-- 1. Filosofi Pendidikan dan Pendidikan Nilai -->
+                    <!-- 1. Filosofi Pendidikan -->
                     <div class="subject-card">
                         <div class="subject-header">
                             <div class="subject-icon"><i class="fa-solid fa-scroll"></i></div>
@@ -825,7 +1036,7 @@ pembelajar sepanjang hayat yang kreatif, kritis, dan berakhlak mulia. </p>
                         </div>
                     </div>
 
-                    <!-- 2. Pembelajaran Peserta Didik dan Pemahamannya -->
+                    <!-- 2. Peserta Didik dan Pemahamannya -->
                     <div class="subject-card">
                         <div class="subject-header">
                             <div class="subject-icon"><i class="fa-solid fa-users"></i></div>
@@ -849,7 +1060,7 @@ pembelajar sepanjang hayat yang kreatif, kritis, dan berakhlak mulia. </p>
                         </div>
                     </div>
 
-                    <!-- 3. Pola Pikir Bertumbuh "Growth Mindset" -->
+                    <!-- 3. Growth Mindset -->
                     <div class="subject-card">
                         <div class="subject-header">
                             <div class="subject-icon"><i class="fa-solid fa-brain"></i></div>
@@ -873,7 +1084,7 @@ pembelajar sepanjang hayat yang kreatif, kritis, dan berakhlak mulia. </p>
                         </div>
                     </div>
 
-                    <!-- 4. Pembelajaran Kreatif dan Inovatif -->
+                    <!-- 4. Pembelajaran Kreatif & Inovatif -->
                     <div class="subject-card">
                         <div class="subject-header">
                             <div class="subject-icon"><i class="fa-solid fa-lightbulb"></i></div>
@@ -897,7 +1108,7 @@ pembelajar sepanjang hayat yang kreatif, kritis, dan berakhlak mulia. </p>
                         </div>
                     </div>
 
-                    <!-- 5. Pembelajaran Mendalam dan Asesmen -->
+                    <!-- 5. Pembelajaran Mendalam & Asesmen -->
                     <div class="subject-card">
                         <div class="subject-header">
                             <div class="subject-icon"><i class="fa-solid fa-chart-line"></i></div>
@@ -944,18 +1155,18 @@ pembelajar sepanjang hayat yang kreatif, kritis, dan berakhlak mulia. </p>
                             </div>
                         </div>
                     </div>
-
                 </div>
-            </section>
+            </div>
 
-            <section id="smt2">
+            <!-- ================= PAGE 4: REFLEKSI SMT 2 ================= -->
+            <div id="page-smt2" class="page-view">
                 <div class="section-header">
                     <h2>Refleksi Mata Kuliah SMT 2</h2>
                     <p>Kumpulan jurnal refleksi dan petinjau dokumen Google Drive mata kuliah Semester 2</p>
                 </div>
 
                 <div class="grid-cards">
-                    <!-- 1. Pembelajaran Sosial Emosional "PSE" -->
+                    <!-- 1. Pembelajaran Sosial Emosional -->
                     <div class="subject-card">
                         <div class="subject-header">
                             <div class="subject-icon" style="color: #d97706;"><i class="fa-solid fa-heart-pulse"></i></div>
@@ -1003,7 +1214,7 @@ pembelajar sepanjang hayat yang kreatif, kritis, dan berakhlak mulia. </p>
                         </div>
                     </div>
 
-                    <!-- 3. Pembelajaran Mendalam dan Asesmen Lanjut -->
+                    <!-- 3. Pembelajaran Mendalam & Asesmen Lanjut -->
                     <div class="subject-card">
                         <div class="subject-header">
                             <div class="subject-icon" style="color: #d97706;"><i class="fa-solid fa-sliders"></i></div>
@@ -1051,7 +1262,7 @@ pembelajar sepanjang hayat yang kreatif, kritis, dan berakhlak mulia. </p>
                         </div>
                     </div>
 
-                    <!-- 5. Pilihan Selektif/Elektif -->
+                    <!-- 5. Pilihan Selektif / Elektif -->
                     <div class="subject-card">
                         <div class="subject-header">
                             <div class="subject-icon" style="color: #d97706;"><i class="fa-solid fa-layer-group"></i></div>
@@ -1074,12 +1285,12 @@ pembelajar sepanjang hayat yang kreatif, kritis, dan berakhlak mulia. </p>
                             </div>
                         </div>
                     </div>
-
                 </div>
-            </section>
+            </div>
 
         </main>
 
+        <!-- MODAL FULL SCREEN PREVIEW -->
         <div class="modal-overlay" id="modalOverlay">
             <div class="modal-container">
                 <div class="modal-header">
@@ -1087,7 +1298,7 @@ pembelajar sepanjang hayat yang kreatif, kritis, dan berakhlak mulia. </p>
                         <i class="fa-solid fa-file-pdf"></i>
                         <span id="modalTitle">Petinjau Dokumen</span>
                     </div>
-                    <button class="close-modal" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+                    <button class="close-modal" onclick="closeModal()" aria-label="Tutup preview"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <div class="modal-body">
                     <iframe id="modalIframe" src="" title="Full Document Preview"></iframe>
@@ -1095,19 +1306,21 @@ pembelajar sepanjang hayat yang kreatif, kritis, dan berakhlak mulia. </p>
             </div>
         </div>
 
+        <!-- FOOTER -->
         <footer class="footer">
             <div class="footer-content">
                 <p>&copy; 2026 <strong>Yohanes Jelly Sonda</strong>. PPG Informatika.</p>
                 <div class="footer-socials">
-                    <a href="#"><i class="fa-brands fa-github"></i></a>
-                    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
-                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
                 </div>
             </div>
         </footer>
 
     </div>
 
+    <!-- JAVASCRIPT LOGIC -->
     <script>
         // Loading Screen Animation
         window.addEventListener('load', () => {
@@ -1115,46 +1328,132 @@ pembelajar sepanjang hayat yang kreatif, kritis, dan berakhlak mulia. </p>
                 const loader = document.getElementById('loader');
                 const mainContent = document.getElementById('main-content');
                 
-                loader.style.opacity = '0';
-                loader.style.transition = '0.5s ease';
-                
-                setTimeout(() => {
-                    loader.style.display = 'none';
-                    mainContent.classList.remove('hidden');
-                }, 500);
-            }, 2000); 
+                if (loader && mainContent) {
+                    loader.style.opacity = '0';
+                    loader.style.transition = '0.5s ease';
+                    
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                        mainContent.classList.remove('hidden');
+                    }, 500);
+                }
+            }, 1000); 
         });
 
-        // Mobile Menu Nav Toggle
+        /* --- PAGE SWITCHING (SPA) SYSTEM --- */
+        function switchPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page-view');
+            pages.forEach(p => p.classList.remove('active-page'));
+
+            // Show selected target page
+            const targetPage = document.getElementById(`page-${pageId}`);
+            if (targetPage) {
+                targetPage.classList.add('active-page');
+            } else {
+                // Default fallback to home
+                document.getElementById('page-home').classList.add('active-page');
+                pageId = 'home';
+            }
+
+            // Update Navigation Links active state
+            document.querySelectorAll('.nav-link[data-page], .dropdown-content a[data-page]').forEach(link => {
+                if (link.getAttribute('data-page') === pageId) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+
+            // Update Navigation Pills active state
+            document.querySelectorAll('.pill-btn[data-pill]').forEach(pill => {
+                if (pill.getAttribute('data-pill') === pageId) {
+                    pill.classList.add('active');
+                } else {
+                    pill.classList.remove('active');
+                }
+            });
+
+            // Update URL hash without breaking history
+            window.location.hash = pageId;
+
+            // Scroll to top of main content area
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+
+            // Close mobile menu if open
+            const navLinks = document.querySelector('.nav-links');
+            if (navLinks) navLinks.classList.remove('nav-active');
+        }
+
+        // Handle Hash Change (Browser Back / Forward buttons & initial URL load)
+        function handleHashRoute() {
+            const hash = window.location.hash.replace('#', '');
+            if (hash && ['home', 'identifikasi-diri', 'smt1', 'smt2'].includes(hash)) {
+                switchPage(hash);
+            } else {
+                switchPage('home');
+            }
+        }
+
+        window.addEventListener('hashchange', handleHashRoute);
+        document.addEventListener('DOMContentLoaded', handleHashRoute);
+
+        // Mobile Navigation Toggle
         const navToggle = document.getElementById('navToggle');
         const navLinks = document.querySelector('.nav-links');
-        if (navToggle) {
-            navToggle.addEventListener('click', () => {
+        const seminarDropdown = document.getElementById('seminarDropdown');
+        const seminarDropBtn = document.getElementById('seminarDropBtn');
+
+        if (navToggle && navLinks) {
+            navToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
                 navLinks.classList.toggle('nav-active');
             });
         }
 
-        // Modal Control Functions for Full View Document Embeds
+        // Handle Dropdown Toggle on Mobile / Touch screens
+        if (seminarDropBtn && seminarDropdown) {
+            seminarDropBtn.addEventListener('click', (e) => {
+                if (window.innerWidth <= 768) {
+                    e.preventDefault();
+                    seminarDropdown.classList.toggle('active');
+                }
+            });
+        }
+
+        /* --- MODAL CONTROL FUNCTIONS --- */
         const modalOverlay = document.getElementById('modalOverlay');
         const modalTitle = document.getElementById('modalTitle');
         const modalIframe = document.getElementById('modalIframe');
 
         function openModal(title, url) {
-            modalTitle.innerText = title;
-            modalIframe.src = url;
-            modalOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
+            if (modalTitle && modalIframe && modalOverlay) {
+                modalTitle.innerText = title;
+                modalIframe.src = url;
+                modalOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
         }
 
         function closeModal() {
-            modalOverlay.classList.remove('active');
-            modalIframe.src = '';
-            document.body.style.overflow = 'auto';
+            if (modalOverlay && modalIframe) {
+                modalOverlay.classList.remove('active');
+                modalIframe.src = '';
+                document.body.style.overflow = 'auto';
+            }
         }
 
-        // Close modal when clicking on overlay background
-        modalOverlay.addEventListener('click', (e) => {
-            if (e.target === modalOverlay) {
+        if (modalOverlay) {
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) closeModal();
+            });
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modalOverlay && modalOverlay.classList.contains('active')) {
                 closeModal();
             }
         });
