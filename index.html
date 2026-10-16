@@ -14,11 +14,11 @@
 
     <style>
         :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --primary-light: #eff6ff;
+            --primary: #facc15;
+            --primary-dark: #ca8a04;
+            --primary-light: #fefce8;
             --secondary: #0f172a;
-            --accent: #38bdf8;
+            --accent: #facc15;
             --bg-light: #f8fafc;
             --card-bg: #ffffff;
             --text-main: #1e293b;
@@ -136,7 +136,7 @@
         }
 
         .nav-brand span {
-            color: var(--primary);
+            color: #d97706;
         }
 
         .nav-links {
@@ -161,7 +161,7 @@
         }
 
         .nav-link:hover, .nav-link.active {
-            color: var(--primary);
+            color: #ca8a04;
             background-color: var(--primary-light);
         }
 
@@ -221,7 +221,7 @@
 
         .dropdown-content a:hover, .dropdown-content a.active {
             background-color: var(--primary-light);
-            color: var(--primary);
+            color: #ca8a04;
             padding-left: 1.5rem;
         }
 
@@ -237,15 +237,58 @@
             padding: 6px;
         }
 
+        /* HERO SECTION WITH BACKGROUND SLIDESHOW */
         .hero-section {
-            padding: 3.5rem 8% 2.5rem;
+            position: relative;
+            padding: 5rem 8% 4rem;
             padding-left: max(8%, env(safe-area-inset-left));
             padding-right: max(8%, env(safe-area-inset-right));
-            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+            overflow: hidden;
+            color: white;
             border-bottom: 1px solid var(--border-color);
+            background-color: var(--secondary);
+        }
+
+        .hero-slideshow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out, transform 6s ease-out;
+            transform: scale(1);
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.88) 0%, rgba(30, 41, 59, 0.82) 100%);
+            z-index: 2;
         }
 
         .hero-container {
+            position: relative;
+            z-index: 3;
             max-width: 1200px;
             margin: 0 auto;
             display: flex;
@@ -258,13 +301,15 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: #dbeafe;
-            color: var(--primary-dark);
+            background: rgba(250, 204, 21, 0.25);
+            border: 1px solid rgba(250, 204, 21, 0.4);
+            color: #fef08a;
             padding: 0.45rem 1.2rem;
             border-radius: 50px;
             font-weight: 700;
             font-size: 0.85rem;
             margin-bottom: 1.25rem;
+            backdrop-filter: blur(4px);
         }
 
         .hero-title-wrapper {
@@ -288,20 +333,22 @@
 
         .hero-text h1 {
             font-size: clamp(1.8rem, 4vw, 2.8rem);
-            color: var(--secondary);
+            color: #ffffff;
             margin-bottom: 0;
             line-height: 1.2;
             font-weight: 800;
             letter-spacing: -0.5px;
             text-align: left;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         .hero-text p {
-            color: var(--text-muted);
+            color: #cbd5e1;
             font-size: clamp(0.95rem, 2vw, 1.05rem);
             max-width: 750px;
             margin: 0.5rem auto 1.8rem;
             text-align: center;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
 
         .nav-pills {
@@ -314,9 +361,9 @@
         .pill-btn {
             padding: 0.65rem 1.3rem;
             border-radius: 50px;
-            background: white;
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
             text-decoration: none;
             font-weight: 600;
             font-size: 0.9rem;
@@ -327,13 +374,14 @@
             gap: 8px;
             cursor: pointer;
             min-height: 44px;
+            backdrop-filter: blur(4px);
         }
 
         .pill-btn:hover, .pill-btn.active {
             background: var(--primary);
-            color: white;
+            color: var(--secondary);
             border-color: var(--primary);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+            box-shadow: 0 4px 12px rgba(250, 204, 21, 0.4);
         }
 
         .main-wrapper {
@@ -346,24 +394,10 @@
             width: 100%;
         }
 
-        .page-view {
-            display: none;
-            animation: slideUp 0.35s ease-out forwards;
-        }
-
-        .page-view.active-page {
-            display: block;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(15px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .section-block {
+            padding-top: 3rem;
+            margin-bottom: 4rem;
+            scroll-margin-top: 100px;
         }
 
         .section-header {
@@ -405,6 +439,7 @@
             cursor: pointer;
             position: relative;
             overflow: hidden;
+            text-decoration: none;
         }
 
         .overview-card::before {
@@ -414,7 +449,7 @@
             left: 0;
             width: 6px;
             height: 100%;
-            background: var(--primary);
+            background: #ca8a04;
             opacity: 0;
             transition: opacity 0.3s ease;
         }
@@ -434,7 +469,7 @@
             height: 52px;
             border-radius: 12px;
             background: var(--primary-light);
-            color: var(--primary);
+            color: #ca8a04;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -460,7 +495,7 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            color: var(--primary);
+            color: #ca8a04;
             font-weight: 700;
             font-size: 0.9rem;
         }
@@ -491,7 +526,7 @@
 
         .id-card-title i {
             font-size: 1.8rem;
-            color: var(--primary);
+            color: #ca8a04;
             background: var(--primary-light);
             padding: 12px;
             border-radius: 12px;
@@ -544,7 +579,7 @@
 
         .btn-action:hover {
             background: var(--primary);
-            color: white;
+            color: var(--secondary);
             border-color: var(--primary);
         }
 
@@ -586,7 +621,7 @@
             height: 48px;
             border-radius: 12px;
             background: white;
-            color: var(--primary);
+            color: #ca8a04;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -605,7 +640,7 @@
         .subject-badge {
             font-size: 0.75rem;
             font-weight: 700;
-            color: var(--primary);
+            color: #ca8a04;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-bottom: 4px;
@@ -693,7 +728,7 @@
 
         .btn-fullscreen-sm:hover {
             background: var(--primary);
-            color: white;
+            color: var(--secondary);
             border-color: var(--primary);
         }
 
@@ -725,7 +760,7 @@
         .artifact-toggle-btn {
             background: transparent;
             border: none;
-            color: var(--primary);
+            color: #ca8a04;
             font-size: 0.82rem;
             font-weight: 700;
             cursor: pointer;
@@ -820,27 +855,7 @@
             gap: 8px;
         }
 
-        .modal-action-btn {
-            background: rgba(255,255,255,0.1);
-            border: none;
-            color: white;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s ease;
-            flex-shrink: 0;
-        }
-
-        .modal-action-btn:hover {
-            background: rgba(255,255,255,0.25);
-        }
-
-        .close-modal {
+        .modal-action-btn, .close-modal {
             background: rgba(255,255,255,0.1);
             border: none;
             color: white;
@@ -855,7 +870,7 @@
             transition: background 0.2s ease;
         }
 
-        .close-modal:hover {
+        .modal-action-btn:hover, .close-modal:hover {
             background: rgba(255,255,255,0.25);
         }
 
@@ -933,6 +948,7 @@
                 transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 box-shadow: var(--shadow-lg);
                 overflow-y: auto;
+                z-index: 1005;
             }
             .nav-links.nav-active { left: 0; }
             .nav-link { width: 100%; padding: 0.75rem 1rem; }
@@ -948,7 +964,7 @@
             .dropdown:hover .dropdown-content { display: none; }
             .dropdown.active .dropdown-content { display: block; }
             
-            .hero-section { padding: 2.5rem 5% 2rem; }
+            .hero-section { padding: 3.5rem 5% 3rem; }
             .hero-title-wrapper { 
                 flex-direction: column;
                 gap: 1rem;
@@ -999,12 +1015,12 @@
 
         <!-- NAVBAR -->
         <nav class="navbar">
-            <a href="https://yohanesjelly2025.github.io/ePorto/" rel="noopener" class="nav-brand" title="Buka E-Portofolio">
+            <a href="#home" class="nav-brand" title="Ke Beranda">
                 E-Portofolio<span>|Yohanes Jelly Sonda</span>
             </a>
             <ul class="nav-links">
                 <li>
-                    <a href="#home" class="nav-link active" data-page="home" onclick="switchPage('home')">
+                    <a href="#home" class="nav-link active" data-target="home">
                         <i class="fa-solid fa-house"></i> Home
                     </a>
                 </li>
@@ -1013,13 +1029,13 @@
                         <i class="fa-solid fa-graduation-cap"></i> Seminar PPG <i class="fa-solid fa-caret-down"></i>
                     </a>
                     <div class="dropdown-content">
-                        <a href="#identifikasi-diri" data-page="identifikasi-diri" onclick="switchPage('identifikasi-diri')">
+                        <a href="#identifikasi-diri" data-target="identifikasi-diri">
                             <i class="fa-solid fa-id-card"></i> Identifikasi Diri
                         </a>
-                        <a href="#smt1" data-page="smt1" onclick="switchPage('smt1')">
+                        <a href="#smt1" data-target="smt1">
                             <i class="fa-solid fa-book-open"></i> Refleksi SMT 1
                         </a>
-                        <a href="#smt2" data-page="smt2" onclick="switchPage('smt2')">
+                        <a href="#smt2" data-target="smt2">
                             <i class="fa-solid fa-award"></i> Refleksi SMT 2
                         </a>
                     </div>
@@ -1030,7 +1046,18 @@
             </div>
         </nav>
 
-        <header class="hero-section">
+        <!-- HERO SECTION WITH BACKGROUND SLIDESHOW -->
+        <header id="home" class="hero-section section-block" style="padding-top: 5rem;">
+            <!-- SLIDESHOW CONTAINER -->
+            <div class="hero-slideshow">
+                <!-- Slide 1: Google Drive Image 1 -->
+                <div class="hero-slide active" style="background-image: url('https://lh3.googleusercontent.com/d/1mQGUs-3PZlIY5a0U143HfLlOyFTyS1EO=w1920?authuser=0');"></div>
+                <!-- Slide 2: Google Drive Image 2 -->
+                <div class="hero-slide" style="background-image: url('https://lh3.googleusercontent.com/d/1_fJuF7uRpgB2fbtGB8gvzmJwJmnwzltz=w1920?authuser=0');"></div>
+            </div>
+            <!-- DARK GRADIENT OVERLAY -->
+            <div class="hero-overlay"></div>
+
             <div class="hero-container">
                 <span class="badge"><i class="fa-solid fa-graduation-cap"></i> Jurnal & Portofolio Seminar</span>
                 
@@ -1044,34 +1071,34 @@
                 
                 <!-- NAVIGATION PILLS -->
                 <div class="nav-pills">
-                    <button class="pill-btn active" data-pill="home" onclick="switchPage('home')">
+                    <a href="#home" class="pill-btn active" data-target="home">
                         <i class="fa-solid fa-house"></i> Home
-                    </button>
-                    <button class="pill-btn" data-pill="identifikasi-diri" onclick="switchPage('identifikasi-diri')">
+                    </a>
+                    <a href="#identifikasi-diri" class="pill-btn" data-target="identifikasi-diri">
                         <i class="fa-solid fa-user-check"></i> Identifikasi Diri
-                    </button>
-                    <button class="pill-btn" data-pill="smt1" onclick="switchPage('smt1')">
+                    </a>
+                    <a href="#smt1" class="pill-btn" data-target="smt1">
                         <i class="fa-solid fa-book-open"></i> Refleksi SMT 1
-                    </button>
-                    <button class="pill-btn" data-pill="smt2" onclick="switchPage('smt2')">
+                    </a>
+                    <a href="#smt2" class="pill-btn" data-target="smt2">
                         <i class="fa-solid fa-award"></i> Refleksi SMT 2
-                    </button>
+                    </a>
                 </div>
             </div>
         </header>
 
         <main class="main-wrapper">
 
-            <!-- ================= PAGE 1: HOME ================= -->
-            <div id="page-home" class="page-view active-page">
+            <!-- ================= SECTION 1: HOME OVERVIEW ================= -->
+            <div class="section-block" style="padding-top: 1rem;">
                 <div class="section-header">
                     <h2>Selamat Datang di Portofolio Seminar PPG</h2>
-                    <p>Pilih navigasi halaman di bawah ini untuk mengakses dokumen Identifikasi Diri dan Refleksi Mata Kuliah SMT 1 & 2.</p>
+                    <p>Pilih navigasi di bawah ini untuk langsung melompat ke area Identifikasi Diri dan Refleksi Mata Kuliah SMT 1 & 2.</p>
                 </div>
 
                 <div class="overview-grid">
                     <!-- Overview Card 1 -->
-                    <div class="overview-card" onclick="switchPage('identifikasi-diri')">
+                    <a href="#identifikasi-diri" class="overview-card">
                         <div>
                             <div class="overview-icon">
                                 <i class="fa-solid fa-id-card"></i>
@@ -1079,11 +1106,11 @@
                             <h3>Identifikasi Diri</h3>
                             <p>Visi pribadi, filosofi mengajar, serta dokumen profil lengkap Mahasiswa PPG Informatika Yohanes Jelly Sonda.</p>
                         </div>
-                        <span class="overview-btn">Buka Halaman <i class="fa-solid fa-arrow-right"></i></span>
-                    </div>
+                        <span class="overview-btn">Buka Bagian Ini <i class="fa-solid fa-arrow-down"></i></span>
+                    </a>
 
                     <!-- Overview Card 2 -->
-                    <div class="overview-card" onclick="switchPage('smt1')">
+                    <a href="#smt1" class="overview-card">
                         <div>
                             <div class="overview-icon">
                                 <i class="fa-solid fa-book-open"></i>
@@ -1091,25 +1118,25 @@
                             <h3>Refleksi Semester 1</h3>
                             <p>Jurnal refleksi & petinjau artefak pembelajaran 6 mata kuliah: Filosofi, PPDP, Growth Mindset, Pembelajaran Kreatif, PMA, dan PPL Terbimbing.</p>
                         </div>
-                        <span class="overview-btn">Lihat Refleksi Semester 1 <i class="fa-solid fa-arrow-right"></i></span>
-                    </div>
+                        <span class="overview-btn">Lihat Semester 1 <i class="fa-solid fa-arrow-down"></i></span>
+                    </a>
 
                     <!-- Overview Card 3 -->
-                    <div class="overview-card" onclick="switchPage('smt2')">
+                    <a href="#smt2" class="overview-card">
                         <div>
                             <div class="overview-icon" style="color: #d97706; background: #fef3c7;">
                                 <i class="fa-solid fa-award"></i>
                             </div>
                             <h3>Refleksi Semester 2</h3>
-                            <p>Jurnal refleksi & petinjau artefak pembelajaran 5 mata kuliah: PSE, Projek Kepemimpinan, Asesmen Lanjut, PPL Mandiri, dan Pengembangan Keprofesian Berkelanjutan.</p>
+                            <p>Jurnal refleksi & petinjau artefak pembelajaran 5 mata kuliah: PSE, Projek Kepemimpinan, Asesmen Lanjut, PPL Mandiri, dan PKB.</p>
                         </div>
-                        <span class="overview-btn" style="color: #d97706;">Lihat Refleksi Semester 2 <i class="fa-solid fa-arrow-right"></i></span>
-                    </div>
+                        <span class="overview-btn" style="color: #d97706;">Lihat Semester 2 <i class="fa-solid fa-arrow-down"></i></span>
+                    </a>
                 </div>
             </div>
 
-            <!-- ================= PAGE 2: IDENTIFIKASI DIRI ================= -->
-            <div id="page-identifikasi-diri" class="page-view">
+            <!-- ================= SECTION 2: IDENTIFIKASI DIRI ================= -->
+            <section id="identifikasi-diri" class="section-block">
                 <div class="section-header">
                     <h2>Identifikasi Diri</h2>
                     <p>Visi pribadi saya untuk Pendidikan Indonesia adalah menciptakan ruang belajar inklusif dan merata yang memungkinkan setiap anak, terlepas dari latar belakangnya, untuk mencapai potensi terbaiknya.</p> 
@@ -1139,10 +1166,10 @@
                         <iframe id="iframe-id-diri" src="SPPG1.pdf" title="Identifikasi Diri Document Preview" allow="autoplay"></iframe>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <!-- ================= PAGE 3: REFLEKSI SMT 1 ================= -->
-            <div id="page-smt1" class="page-view">
+            <!-- ================= SECTION 3: REFLEKSI SMT 1 ================= -->
+            <section id="smt1" class="section-block">
                 <div class="section-header">
                     <h2>Refleksi Mata Kuliah Semester 1</h2>
                     <p>Kumpulan jurnal refleksi dan petinjau artefak dokumen PDF untuk setiap mata kuliah Semester 1</p>
@@ -1563,10 +1590,10 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <!-- ================= PAGE 4: REFLEKSI SMT 2 ================= -->
-            <div id="page-smt2" class="page-view">
+            <!-- ================= SECTION 4: REFLEKSI SMT 2 ================= -->
+            <section id="smt2" class="section-block">
                 <div class="section-header">
                     <h2>Refleksi Mata Kuliah SMT 2</h2>
                     <p>Kumpulan jurnal refleksi dan petinjau artefak dokumen PDF untuk setiap mata kuliah Semester 2</p>
@@ -1602,7 +1629,7 @@
                                     <iframe src="pse.pdf" title="Refleksi Pembelajaran Sosial Emosional Preview"></iframe>
                                 </div>
                                 <div class="artifact-controls-bar">
-                                    <button class="artifact-toggle-btn" onclick="toggleArtifactView('embed-ref-smt1-1', this)">
+                                    <button class="artifact-toggle-btn" onclick="toggleArtifactView('embed-ref-smt2-1', this)">
                                         <i class="fa-solid fa-chevron-up"></i> Ciutkan Preview
                                     </button>
                                     <span class="artifact-status">Refleksi</span>
@@ -1918,7 +1945,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
         </main>
 
@@ -1977,81 +2004,79 @@
             }, 800); 
         });
 
-        /* --- PAGE SWITCHING (SPA) SYSTEM --- */
-        function switchPage(pageId) {
-            // Hide all pages
-            const pages = document.querySelectorAll('.page-view');
-            pages.forEach(p => p.classList.remove('active-page'));
-
-            // Show selected target page
-            const targetPage = document.getElementById(`page-${pageId}`);
-            if (targetPage) {
-                targetPage.classList.add('active-page');
-            } else {
-                // Default fallback to home
-                document.getElementById('page-home').classList.add('active-page');
-                pageId = 'home';
+        /* --- HERO BACKGROUND SLIDESHOW --- */
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.hero-slide');
+            if (slides.length > 0) {
+                let currentSlide = 0;
+                setInterval(() => {
+                    slides[currentSlide].classList.remove('active');
+                    currentSlide = (currentSlide + 1) % slides.length;
+                    slides[currentSlide].classList.add('active');
+                }, 4500);
             }
+        });
 
-            // Update Navigation Links active state
-            document.querySelectorAll('.nav-link[data-page], .dropdown-content a[data-page]').forEach(link => {
-                if (link.getAttribute('data-page') === pageId) {
-                    link.classList.add('active');
-                } else {
-                    link.classList.remove('active');
+        /* --- SMOOTH SCROLL & ACTIVE SCROLL-SPY NAVIGATION --- */
+        const sections = document.querySelectorAll('header#home, section.section-block');
+        const navLinksList = document.querySelectorAll('.nav-link[data-target], .dropdown-content a[data-target], .pill-btn[data-target]');
+
+        function updateActiveNavOnScroll() {
+            const scrollPos = window.scrollY + 150;
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                const sectionId = section.getAttribute('id');
+
+                if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+                    navLinksList.forEach(link => {
+                        if (link.getAttribute('data-target') === sectionId) {
+                            link.classList.add('active');
+                        } else {
+                            link.classList.remove('active');
+                        }
+                    });
                 }
             });
+        }
 
-            // Update Navigation Pills active state
-            document.querySelectorAll('.pill-btn[data-pill]').forEach(pill => {
-                if (pill.getAttribute('data-pill') === pageId) {
-                    pill.classList.add('active');
-                } else {
-                    pill.classList.remove('active');
+        window.addEventListener('scroll', updateActiveNavOnScroll);
+
+        // Click handler for smooth scrolling navigation
+        navLinksList.forEach(link => {
+            link.addEventListener('click', (e) => {
+                const targetId = link.getAttribute('data-target');
+                const targetElem = document.getElementById(targetId);
+                if (targetElem) {
+                    e.preventDefault();
+                    targetElem.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+
+                    // Close mobile menu if open
+                    const navLinksContainer = document.querySelector('.nav-links');
+                    if (navLinksContainer) navLinksContainer.classList.remove('nav-active');
+                    const seminarDropdown = document.getElementById('seminarDropdown');
+                    if (seminarDropdown) seminarDropdown.classList.remove('active');
                 }
             });
-
-            // Update URL hash without breaking history
-            window.location.hash = pageId;
-
-            // Scroll to top of main content area
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-
-            // Close mobile menu if open
-            const navLinks = document.querySelector('.nav-links');
-            if (navLinks) navLinks.classList.remove('nav-active');
-        }
-
-        // Handle Hash Change (Browser Back / Forward buttons & initial URL load)
-        function handleHashRoute() {
-            const hash = window.location.hash.replace('#', '');
-            if (hash && ['home', 'identifikasi-diri', 'smt1', 'smt2'].includes(hash)) {
-                switchPage(hash);
-            } else {
-                switchPage('home');
-            }
-        }
-
-        window.addEventListener('hashchange', handleHashRoute);
-        document.addEventListener('DOMContentLoaded', handleHashRoute);
+        });
 
         // Mobile Navigation Toggle
         const navToggle = document.getElementById('navToggle');
-        const navLinks = document.querySelector('.nav-links');
+        const navLinksContainer = document.querySelector('.nav-links');
         const seminarDropdown = document.getElementById('seminarDropdown');
         const seminarDropBtn = document.getElementById('seminarDropBtn');
 
-        if (navToggle && navLinks) {
+        if (navToggle && navLinksContainer) {
             navToggle.addEventListener('click', (e) => {
                 e.stopPropagation();
-                navLinks.classList.toggle('nav-active');
+                navLinksContainer.classList.toggle('nav-active');
             });
         }
 
-        // Handle Dropdown Toggle on Mobile / Touch screens
         if (seminarDropBtn && seminarDropdown) {
             seminarDropBtn.addEventListener('click', (e) => {
                 if (window.innerWidth <= 768) {
